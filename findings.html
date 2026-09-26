@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Findings — Signal Forecast</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a href="index.html"><svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>Overview</a>
+    <a href="findings.html" class="active"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15v-4M12 15V8M16 15v-7"/></svg>Findings</a>
+    <a href="predictor.html"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10M12 6a6 6 0 0 1 6 6M12 10a2 2 0 0 1 2 2M12 22v-4"/></svg>Live Predictor</a>
+  </nav>
+
+  <div class="eyebrow">FINDINGS</div>
+  <h1>Wind matters most. By a wide margin.</h1>
+  <p class="sub">Correlation strength between each weather factor and signal strength, both networks, across all 365 days.</p>
+
+  <h2>Correlation with signal strength (r)</h2>
+  <div class="card">
+    <div class="stat-row"><div class="stat-label">Wind Speed — MTN</div><div class="stat-val">r = −0.61 <span class="sig yes">significant</span></div></div>
+    <div class="bar-track"><div class="bar-fill" style="width:61%; background:var(--mtn);"></div></div>
+  </div>
+  <div class="card">
+    <div class="stat-row"><div class="stat-label">Wind Speed — Airtel</div><div class="stat-val">r = −0.62 <span class="sig yes">significant</span></div></div>
+    <div class="bar-track"><div class="bar-fill" style="width:62%; background:var(--airtel);"></div></div>
+  </div>
+  <div class="card">
+    <div class="stat-row"><div class="stat-label">Humidity — MTN</div><div class="stat-val">r = −0.36 <span class="sig yes">significant</span></div></div>
+    <div class="bar-track"><div class="bar-fill" style="width:36%; background:var(--mtn);"></div></div>
+  </div>
+  <div class="card">
+    <div class="stat-row"><div class="stat-label">Temperature — Airtel</div><div class="stat-val">r = +0.19 <span class="sig yes">significant</span></div></div>
+    <div class="bar-track"><div class="bar-fill" style="width:19%; background:var(--airtel);"></div></div>
+  </div>
+  <div class="card">
+    <div class="stat-row"><div class="stat-label">Pressure — MTN</div><div class="stat-val">r = 0.01 <span class="sig no">not significant</span></div></div>
+    <div class="bar-track"><div class="bar-fill" style="width:1%; background:var(--text-dim);"></div></div>
+  </div>
+  <p class="body-text" style="margin-top:14px; font-size:14px;">r ranges from −1 to +1. Closer to 0 means little relationship; further from 0 means a stronger one. All values above with a p-value under 0.05 are statistically real, not chance.</p>
+
+  <h2>Wet season vs dry season</h2>
+  <div class="card">
+    <div class="stat-row"><div class="stat-label">MTN — Dry season avg</div><div class="stat-val">−88.6 dBm</div></div>
+    <div class="stat-row" style="margin-top:8px;"><div class="stat-label">MTN — Wet season avg</div><div class="stat-val">−94.1 dBm</div></div>
+    <p class="body-text" style="margin-top:10px; font-size:14px;"><strong>5.5 dBm weaker</strong> on average during wet season (p &lt; 0.001 — statistically real, not noise).</p>
+  </div>
+  <div class="card">
+    <div class="stat-row"><div class="stat-label">Airtel — Dry season avg</div><div class="stat-val">−94.2 dBm</div></div>
+    <div class="stat-row" style="margin-top:8px;"><div class="stat-label">Airtel — Wet season avg</div><div class="stat-val">−99.7 dBm</div></div>
+    <p class="body-text" style="margin-top:10px; font-size:14px;"><strong>5.5 dBm weaker</strong> on average during wet season too — both networks affected almost equally.</p>
+  </div>
+
+  <h2>The predictive model</h2>
+  <p class="body-text">A linear regression trained on all four weather variables explains <strong>about 53% (R² = 0.53)</strong> of the day-to-day variation in signal strength for both networks. The rest comes from factors outside this dataset — network congestion, tower distance, terrain, and infrastructure load.</p>
+
+  <div style="margin-top:32px;">
+    <a href="predictor.html" class="btn">Try the live predictor →</a>
+  </div>
+
+  <footer>
+    Correlation analysis, seasonal comparison and regression model computed from the full 365-day dataset (Port Harcourt, 2025).
+  </footer>
+</div>
+</body>
+</html>
