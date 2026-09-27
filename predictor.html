@@ -158,12 +158,14 @@ async function runSearch(){
       const dTemp = avg(d.temp), dHum = avg(d.hum), dPres = avg(d.pres), dWind = avg(d.wind);
       const mtnP = predict('MTN', dTemp, dHum, dPres, dWind);
       const airtelP = predict('Airtel', dTemp, dHum, dPres, dWind);
+      const mtnQ2 = qualityOf(mtnP);
+      const airtelQ2 = qualityOf(airtelP);
       const card = document.createElement('div');
       card.className = 'fcard';
       card.innerHTML = `<div class="fday">${labels[i]}</div>
         <div class="ftemp">${dTemp.toFixed(1)}°C · ${dWind.toFixed(0)} km/h wind</div>
-        <div class="fnet"><span>MTN</span><span class="fdbm">${mtnP.toFixed(1)} dBm</span></div>
-        <div class="fnet"><span>Airtel</span><span class="fdbm">${airtelP.toFixed(1)} dBm</span></div>`;
+        <div class="fnet"><span>MTN</span><span class="fdbm">${mtnP.toFixed(1)} dBm <span class="fq ${mtnQ2.cls}">${mtnQ2.label}</span></span></div>
+        <div class="fnet"><span>Airtel</span><span class="fdbm">${airtelP.toFixed(1)} dBm <span class="fq ${airtelQ2.cls}">${airtelQ2.label}</span></span></div>`;
       forecastRow.appendChild(card);
     });
   }catch(err){

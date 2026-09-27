@@ -45,3 +45,5 @@ footer{margin-top:48px; padding-top:20px; border-top:1px solid var(--line); font
 .fcard .ftemp{font-size:15px; margin-bottom:8px;}
 .fcard .fnet{display:flex; justify-content:space-between; font-size:12.5px; margin-top:4px;}
 .fcard .fnet .fdbm{font-family:'IBM Plex Mono',monospace;}
+.fq{font-size:10.5px; font-weight:700; margin-left:4px;}
+.fq.good{color:var(--good);} .fq.fair{color:var(--fair);} .fq.poor{color:var(--poor);}
