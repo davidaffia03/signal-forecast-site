@@ -3,49 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Signal Forecast — Weather Effects on GSM Services</title>
+<title>Weather and GSM signal strength in Port Harcourt</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="wrap">
-  <nav>
-    <a href="index.html" class="active"><svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>Overview</a>
-    <a href="findings.html"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15v-4M12 15V8M16 15v-7"/></svg>Findings</a>
-    <a href="predictor.html"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10M12 6a6 6 0 0 1 6 6M12 10a2 2 0 0 1 2 2M12 22v-4"/></svg>Live Predictor</a>
-  </nav>
+<nav>
+  <a href="index.html" class="active">Overview</a>
+  <a href="findings.html">Findings</a>
+  <a href="predictor.html">Predictor</a>
+</nav>
+  <h1>Weather and GSM signal strength in Port Harcourt</h1>
+  <p class="byline">By David Affia. Data from a PhD research project on weather and GSM signal strength, Port Harcourt, 2025.</p>
 
-  <div class="eyebrow">RESEARCH PROJECT · PORT HARCOURT, NIGERIA</div>
-  <h1>Does weather affect your phone signal?</h1>
-  <p class="sub">A year of daily weather data — temperature, humidity, pressure, wind — compared against MTN and Airtel signal strength in Port Harcourt, to find out how much of your signal quality actually comes down to the sky.</p>
+  <p>I compared a year of daily weather readings (temperature, humidity, pressure and wind speed) with MTN and Airtel signal strength in Port Harcourt. The aim was to measure how much of the change in signal can be linked to the weather.</p>
 
-  <h2>The question</h2>
-  <p class="body-text">Nigerian networks are known to weaken during storms and heavy rain, but how much of that is really weather, and how much is something else — congestion, distance to a tower, terrain? This project uses 365 days of matched weather and signal-strength readings to measure it directly, then builds a model that can estimate signal strength from live weather conditions anywhere.</p>
+  <p>People here often notice the network getting worse during storms and heavy rain. Weather is only one possible cause. Congestion, distance from the tower and terrain also matter, and this dataset says nothing about them. So this project measures the weather part only.</p>
 
-  <h2>What's here</h2>
-  <div class="card">
-    <div class="stat-row">
-      <div>
-        <div class="stat-label" style="font-weight:700;">Findings</div>
-        <div class="body-text" style="margin-top:4px;">Which weather factors actually move the needle, with real correlation numbers from the dataset.</div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="stat-row">
-      <div>
-        <div class="stat-label" style="font-weight:700;">Live Predictor</div>
-        <div class="body-text" style="margin-top:4px;">Type any location, pull its current weather, and see a live-predicted MTN/Airtel signal estimate — plus a 5-day outlook.</div>
-      </div>
-    </div>
-  </div>
+  <h2>Pages</h2>
+  <ul>
+    <li><a href="findings.html">Findings</a>: correlations, wet season against dry season, and the regression model.</li>
+    <li><a href="predictor.html">Predictor</a>: enter a city and get an estimated signal strength from its current weather.</li>
+  </ul>
 
-  <div style="margin-top:32px;">
-    <a href="findings.html" class="btn">See the findings →</a>
-  </div>
-
-  <footer>
-    Dataset: 365 days of 2025 daily weather (temperature, humidity, pressure, wind) paired with MTN and Airtel signal strength readings, Port Harcourt.
-  </footer>
+  <footer>Data: 365 days of 2025 weather and MTN and Airtel signal readings for Port Harcourt.</footer>
 </div>
 </body>
 </html>

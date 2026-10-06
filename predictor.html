@@ -3,80 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Live Predictor — Signal Forecast</title>
+<title>Predictor - Weather and GSM signal strength</title>
 <link rel="stylesheet" href="style.css">
-<style>
-  .search-row{display:flex; gap:10px; margin:28px 0 8px;}
-  input[type=text]{flex:1; background:var(--bg-panel); border:1px solid var(--line); color:var(--text); padding:14px 16px; border-radius:8px; font-size:16px; font-family:inherit;}
-  input[type=text]:focus{outline:none; border-color:var(--wave);}
-  button{background:var(--wave); color:#04191c; border:none; padding:14px 22px; border-radius:8px; font-weight:700; font-size:15px; cursor:pointer; font-family:inherit;}
-  button:disabled{opacity:0.5; cursor:default;}
-  .hint{font-size:13px; color:var(--text-dim); font-family:'IBM Plex Mono',monospace;}
-  .status{margin:18px 0; font-size:14px; color:var(--text-dim); min-height:20px;}
-  .status.err{color:var(--poor);}
-  .result{display:none; margin-top:20px;}
-  .result.show{display:block;}
-  .loc-line{font-size:15px; color:var(--text-dim); margin-bottom:18px;}
-  .loc-line strong{color:var(--text);}
-  .weather-row{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-bottom:22px;}
-  .wcell{background:var(--bg-panel); padding:16px 12px;}
-  .wcell .label{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-dim); margin-bottom:6px;}
-  .wcell .val{font-size:19px; font-weight:700;}
-  .netcard{display:flex; align-items:center; justify-content:space-between; gap:16px;}
-  .netname{display:flex; align-items:center; gap:10px; font-weight:700; font-size:17px;}
-  .dot{width:10px; height:10px; border-radius:50%;}
-  .dot.mtn{background:var(--mtn);} .dot.airtel{background:var(--airtel);}
-  .netstats{text-align:right;}
-  .dbm{font-family:'IBM Plex Mono',monospace; font-size:21px; font-weight:500;}
-  .quality{font-size:13px; margin-top:4px; font-weight:700;}
-  .quality.good{color:var(--good);} .quality.fair{color:var(--fair);} .quality.poor{color:var(--poor);}
-</style>
 </head>
 <body>
 <div class="wrap">
-  <nav>
-    <a href="index.html"><svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>Overview</a>
-    <a href="findings.html"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15v-4M12 15V8M16 15v-7"/></svg>Findings</a>
-    <a href="predictor.html" class="active"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10M12 6a6 6 0 0 1 6 6M12 10a2 2 0 0 1 2 2M12 22v-4"/></svg>Live Predictor</a>
-  </nav>
-
-  <div class="eyebrow">LIVE PREDICTOR</div>
-  <h1>What's your signal like right now?</h1>
-  <p class="sub">Type any location. We pull live weather there and estimate MTN and Airtel signal strength using the model from the Findings page.</p>
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="findings.html">Findings</a>
+  <a href="predictor.html" class="active">Predictor</a>
+</nav>
+  <h1>Estimate signal strength from current weather</h1>
+  <p>Enter a city. The page gets its current weather from Open-Meteo and runs it through the regression model from the <a href="findings.html">Findings page</a>.</p>
+  <p class="note">The model was trained on Port Harcourt data only. Results for other cities are rough.</p>
 
   <div class="search-row">
-    <input type="text" id="cityInput" placeholder="Try Port Harcourt, Lagos, Uyo..." autocomplete="off">
+    <input type="text" id="cityInput" placeholder="City name, e.g. Port Harcourt" autocomplete="off">
     <button id="goBtn">Check</button>
   </div>
-  <div class="hint">Press Enter or click Check</div>
   <div class="status" id="status"></div>
 
   <div class="result" id="result">
     <div class="loc-line" id="locLine"></div>
     <div class="weather-row">
-      <div class="wcell"><div class="label">TEMP</div><div class="val" id="wTemp">—</div></div>
-      <div class="wcell"><div class="label">HUMIDITY</div><div class="val" id="wHum">—</div></div>
-      <div class="wcell"><div class="label">PRESSURE</div><div class="val" id="wPres">—</div></div>
-      <div class="wcell"><div class="label">WIND</div><div class="val" id="wWind">—</div></div>
+      <div class="wcell"><div class="label">Temperature</div><div class="val" id="wTemp">-</div></div>
+      <div class="wcell"><div class="label">Humidity</div><div class="val" id="wHum">-</div></div>
+      <div class="wcell"><div class="label">Pressure</div><div class="val" id="wPres">-</div></div>
+      <div class="wcell"><div class="label">Wind</div><div class="val" id="wWind">-</div></div>
     </div>
-    <div class="card netcard">
-      <div><div class="netname"><span class="dot mtn"></span>MTN</div>
-        <div class="bar-track" style="width:160px"><div class="bar-fill" id="mtnBar"></div></div></div>
-      <div class="netstats"><div class="dbm" id="mtnDbm">—</div><div class="quality" id="mtnQ">—</div></div>
+    <div class="netcard">
+      <div class="netname">MTN</div>
+      <div class="netstats"><div class="dbm" id="mtnDbm">-</div><div class="quality" id="mtnQ">-</div></div>
     </div>
-    <div class="card netcard">
-      <div><div class="netname"><span class="dot airtel"></span>Airtel</div>
-        <div class="bar-track" style="width:160px"><div class="bar-fill" id="airtelBar"></div></div></div>
-      <div class="netstats"><div class="dbm" id="airtelDbm">—</div><div class="quality" id="airtelQ">—</div></div>
+    <div class="netcard">
+      <div class="netname">Airtel</div>
+      <div class="netstats"><div class="dbm" id="airtelDbm">-</div><div class="quality" id="airtelQ">-</div></div>
     </div>
 
-    <h2 style="font-size:16px; margin:26px 0 12px;">Next 5 days</h2>
+    <h2>Next 5 days</h2>
     <div class="forecast-row" id="forecastRow"></div>
   </div>
 
-  <footer>
-    Model: linear regression trained on 365 days of Port Harcourt weather and MTN/Airtel signal readings. R² ≈ 0.53 — weather explains roughly half the day-to-day variation in signal strength. Live weather via Open-Meteo. Estimates, not guarantees.
-  </footer>
+  <footer>Linear regression trained on 365 days of Port Harcourt weather and MTN and Airtel readings (R&sup2; about 0.53). Live weather from Open-Meteo. These are estimates.</footer>
 </div>
 
 <script>
@@ -90,9 +58,9 @@ function predict(net, temp, humidity, pressure, wind){
   return Math.max(-120, Math.min(-60, v));
 }
 function qualityOf(dbm){
-  if (dbm >= -85) return {label:'Good', cls:'good', pct:90};
-  if (dbm >= -100) return {label:'Fair', cls:'fair', pct:55};
-  return {label:'Poor', cls:'poor', pct:20};
+  if (dbm >= -85) return {label:'Good', cls:'good'};
+  if (dbm >= -100) return {label:'Fair', cls:'fair'};
+  return {label:'Poor', cls:'poor'};
 }
 const statusEl = document.getElementById('status');
 const resultEl = document.getElementById('result');
@@ -101,24 +69,24 @@ const input = document.getElementById('cityInput');
 
 async function runSearch(){
   const q = input.value.trim();
-  if(!q) return;
+  if(!q){ statusEl.textContent = 'Enter a city name first.'; statusEl.className = 'status err'; return; }
   statusEl.textContent = 'Searching...'; statusEl.className = 'status';
   resultEl.classList.remove('show'); goBtn.disabled = true;
   try{
     const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=1`);
     const geoData = await geoRes.json();
     if(!geoData.results || geoData.results.length === 0){
-      statusEl.textContent = 'Location not found. Try a different spelling.'; statusEl.className = 'status err';
+      statusEl.textContent = 'Location not found. Check the spelling or try a larger nearby city.'; statusEl.className = 'status err';
       goBtn.disabled = false; return;
     }
     const place = geoData.results[0];
-    statusEl.textContent = 'Fetching live weather...';
+    statusEl.textContent = 'Getting current weather...';
     const wxRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m`);
     const wxData = await wxRes.json();
     const c = wxData.current;
     const temp = c.temperature_2m, hum = c.relative_humidity_2m, pres = c.surface_pressure, wind = c.wind_speed_10m;
 
-    document.getElementById('locLine').innerHTML = `<strong>${place.name}${place.admin1 ? ', '+place.admin1 : ''}, ${place.country}</strong> — right now`;
+    document.getElementById('locLine').innerHTML = `<strong>${place.name}${place.admin1 ? ', '+place.admin1 : ''}, ${place.country}</strong>, current conditions`;
     document.getElementById('wTemp').textContent = temp.toFixed(1)+'°C';
     document.getElementById('wHum').textContent = hum+'%';
     document.getElementById('wPres').textContent = Math.round(pres)+' hPa';
@@ -131,8 +99,6 @@ async function runSearch(){
       document.getElementById(p+'Dbm').textContent = dbm.toFixed(1)+' dBm';
       const ql = document.getElementById(p+'Q');
       ql.textContent = q2.label+' signal'; ql.className = 'quality '+q2.cls;
-      const bar = document.getElementById(p+'Bar');
-      bar.style.width = q2.pct+'%'; bar.style.background = net==='MTN' ? 'var(--mtn)' : 'var(--airtel)';
     });
     statusEl.textContent = ''; resultEl.classList.add('show');
 
@@ -163,13 +129,13 @@ async function runSearch(){
       const card = document.createElement('div');
       card.className = 'fcard';
       card.innerHTML = `<div class="fday">${labels[i]}</div>
-        <div class="ftemp">${dTemp.toFixed(1)}°C · ${dWind.toFixed(0)} km/h wind</div>
-        <div class="fnet"><span>MTN</span><span class="fdbm">${mtnP.toFixed(1)} dBm <span class="fq ${mtnQ2.cls}">${mtnQ2.label}</span></span></div>
-        <div class="fnet"><span>Airtel</span><span class="fdbm">${airtelP.toFixed(1)} dBm <span class="fq ${airtelQ2.cls}">${airtelQ2.label}</span></span></div>`;
+        <div>${dTemp.toFixed(1)}°C, ${dWind.toFixed(0)} km/h wind</div>
+        <div class="fnet"><span>MTN</span><span>${mtnP.toFixed(1)} dBm <span class="fq ${mtnQ2.cls}">${mtnQ2.label}</span></span></div>
+        <div class="fnet"><span>Airtel</span><span>${airtelP.toFixed(1)} dBm <span class="fq ${airtelQ2.cls}">${airtelQ2.label}</span></span></div>`;
       forecastRow.appendChild(card);
     });
   }catch(err){
-    statusEl.textContent = 'Something went wrong fetching data. Check your connection and try again.';
+    statusEl.textContent = 'Could not get the data. Check your internet connection and try again.';
     statusEl.className = 'status err';
   }
   goBtn.disabled = false;

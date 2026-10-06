@@ -3,66 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Findings — Signal Forecast</title>
+<title>Findings - Weather and GSM signal strength</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="wrap">
-  <nav>
-    <a href="index.html"><svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>Overview</a>
-    <a href="findings.html" class="active"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15v-4M12 15V8M16 15v-7"/></svg>Findings</a>
-    <a href="predictor.html"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10M12 6a6 6 0 0 1 6 6M12 10a2 2 0 0 1 2 2M12 22v-4"/></svg>Live Predictor</a>
-  </nav>
+<nav>
+  <a href="index.html">Overview</a>
+  <a href="findings.html" class="active">Findings</a>
+  <a href="predictor.html">Predictor</a>
+</nav>
+  <h1>Wind speed has the strongest link to signal strength</h1>
+  <p class="byline">365 days of data, MTN and Airtel, Port Harcourt, 2025.</p>
 
-  <div class="eyebrow">FINDINGS</div>
-  <h1>Wind matters most. By a wide margin.</h1>
-  <p class="sub">Correlation strength between each weather factor and signal strength, both networks, across all 365 days.</p>
+  <p class="pull">Wind speed explains more of the drop in signal than humidity, temperature or pressure.</p>
 
-  <h2>Correlation with signal strength (r)</h2>
-  <div class="card">
-    <div class="stat-row"><div class="stat-label">Wind Speed — MTN</div><div class="stat-val">r = −0.61 <span class="sig yes">significant</span></div></div>
-    <div class="bar-track"><div class="bar-fill" style="width:61%; background:var(--mtn);"></div></div>
-  </div>
-  <div class="card">
-    <div class="stat-row"><div class="stat-label">Wind Speed — Airtel</div><div class="stat-val">r = −0.62 <span class="sig yes">significant</span></div></div>
-    <div class="bar-track"><div class="bar-fill" style="width:62%; background:var(--airtel);"></div></div>
-  </div>
-  <div class="card">
-    <div class="stat-row"><div class="stat-label">Humidity — MTN</div><div class="stat-val">r = −0.36 <span class="sig yes">significant</span></div></div>
-    <div class="bar-track"><div class="bar-fill" style="width:36%; background:var(--mtn);"></div></div>
-  </div>
-  <div class="card">
-    <div class="stat-row"><div class="stat-label">Temperature — Airtel</div><div class="stat-val">r = +0.19 <span class="sig yes">significant</span></div></div>
-    <div class="bar-track"><div class="bar-fill" style="width:19%; background:var(--airtel);"></div></div>
-  </div>
-  <div class="card">
-    <div class="stat-row"><div class="stat-label">Pressure — MTN</div><div class="stat-val">r = 0.01 <span class="sig no">not significant</span></div></div>
-    <div class="bar-track"><div class="bar-fill" style="width:1%; background:var(--text-dim);"></div></div>
-  </div>
-  <p class="body-text" style="margin-top:14px; font-size:14px;">r ranges from −1 to +1. Closer to 0 means little relationship; further from 0 means a stronger one. All values above with a p-value under 0.05 are statistically real, not chance.</p>
-
-  <h2>Wet season vs dry season</h2>
-  <div class="card">
-    <div class="stat-row"><div class="stat-label">MTN — Dry season avg</div><div class="stat-val">−88.6 dBm</div></div>
-    <div class="stat-row" style="margin-top:8px;"><div class="stat-label">MTN — Wet season avg</div><div class="stat-val">−94.1 dBm</div></div>
-    <p class="body-text" style="margin-top:10px; font-size:14px;"><strong>5.5 dBm weaker</strong> on average during wet season (p &lt; 0.001 — statistically real, not noise).</p>
-  </div>
-  <div class="card">
-    <div class="stat-row"><div class="stat-label">Airtel — Dry season avg</div><div class="stat-val">−94.2 dBm</div></div>
-    <div class="stat-row" style="margin-top:8px;"><div class="stat-label">Airtel — Wet season avg</div><div class="stat-val">−99.7 dBm</div></div>
-    <p class="body-text" style="margin-top:10px; font-size:14px;"><strong>5.5 dBm weaker</strong> on average during wet season too — both networks affected almost equally.</p>
+  <h2>Signal strength by wind speed</h2>
+  <div class="chart">
+    <svg id="c" viewBox="0 0 640 320" role="img" aria-label="Average MTN and Airtel signal strength by wind speed band"></svg>
+    <p class="note">Average signal strength (dBm) for days grouped into six wind-speed bands. Higher on the chart means a stronger signal. The top band has only 19 days, so it is the least reliable point.</p>
   </div>
 
-  <h2>The predictive model</h2>
-  <p class="body-text">A linear regression trained on all four weather variables explains <strong>about 53% (R² = 0.53)</strong> of the day-to-day variation in signal strength for both networks. The rest comes from factors outside this dataset — network congestion, tower distance, terrain, and infrastructure load.</p>
+  <h2>Correlation with signal strength</h2>
+  <table>
+    <tr><th>Weather factor</th><th>Network</th><th class="n">r</th><th>Significant (p &lt; 0.05)</th></tr>
+    <tr><td>Wind speed</td><td class="mtn">MTN</td><td class="n">-0.61</td><td>Yes</td></tr>
+    <tr><td>Wind speed</td><td class="airtel">Airtel</td><td class="n">-0.62</td><td>Yes</td></tr>
+    <tr><td>Humidity</td><td class="mtn">MTN</td><td class="n">-0.36</td><td>Yes</td></tr>
+    <tr><td>Temperature</td><td class="airtel">Airtel</td><td class="n">+0.19</td><td>Yes</td></tr>
+    <tr><td>Pressure</td><td class="mtn">MTN</td><td class="n">0.01</td><td>No</td></tr>
+  </table>
+  <p class="note">r runs from -1 to +1. The closer to 0, the weaker the relationship. A negative r means signal gets weaker as that factor goes up. Since signal is measured in negative dBm, "weaker" here means a more negative reading.</p>
 
-  <div style="margin-top:32px;">
-    <a href="predictor.html" class="btn">Try the live predictor →</a>
-  </div>
+  <h2>Wet season and dry season</h2>
+  <table>
+    <tr><th>Network</th><th class="n">Dry season</th><th class="n">Wet season</th><th class="n">Difference</th></tr>
+    <tr><td class="mtn">MTN</td><td class="n">-88.6 dBm</td><td class="n">-94.1 dBm</td><td class="n">5.5 dBm</td></tr>
+    <tr><td class="airtel">Airtel</td><td class="n">-94.2 dBm</td><td class="n">-99.7 dBm</td><td class="n">5.5 dBm</td></tr>
+  </table>
+  <p>Both networks were about 5.5 dBm weaker in the wet season (p &lt; 0.001).</p>
 
-  <footer>
-    Correlation analysis, seasonal comparison and regression model computed from the full 365-day dataset (Port Harcourt, 2025).
-  </footer>
+  <h2>Regression model</h2>
+  <p>A linear regression using all four weather variables explains about 53% of the day-to-day variation in signal strength (R&sup2; = 0.53) for each network. The other 47% comes from things not in this dataset, such as congestion, tower distance and terrain.</p>
+
+  <h2>Data source</h2>
+  <p>The data was measured, not simulated. It comes from a custom weather and GSM monitoring station built for the PhD research this analysis supports. The station records wind, temperature, humidity and pressure alongside MTN and Airtel signal strength. The readings are the client's, and I analysed them without collecting them myself.</p>
+
+  <h2>Limitations</h2>
+  <ul>
+    <li>The data covers one city and one year.</li>
+    <li>Each reading is a daily value, so changes within a day are not captured.</li>
+    <li>The model is linear. It cannot pick up effects that are not a straight line.</li>
+    <li>Correlation does not show cause. Wind may be standing in for something else, such as storms that bring heavy load on the network.</li>
+    <li>Signal strength is affected by things the station did not record, such as congestion, tower distance and terrain.</li>
+    <li>I checked for outliers using the IQR rule. The flagged days were mostly low-wind and low-humidity days in the dry season, and a few high-wind days. I kept them because they appear to be real readings. Removing them lowered the wind correlation slightly (MTN -0.61 to -0.57, Airtel -0.62 to -0.54) but did not change the conclusion.</li>
+  </ul>
+
+  <p>You can test the model on the <a href="predictor.html">predictor page</a>.</p>
+
+  <footer>Correlations, seasonal comparison and regression computed from the full 365-day dataset (Port Harcourt, 2025).</footer>
 </div>
+
+<script>
+const W=[3.1,4.2,5.1,6.1,7.0,8.2], M=[-83.3,-85.8,-90.0,-94.5,-97.6,-96.8], A=[-84.7,-95.0,-95.9,-99.7,-103.2,-106.7];
+const X=v=>60+(v-2.5)*560/6.5, Y=v=>20+(-80-v)*250/30;
+let h='';
+[-80,-90,-100,-110].forEach(v=>h+=`<line x1="60" x2="620" y1="${Y(v)}" y2="${Y(v)}" stroke="#1f2b36"/><text x="52" y="${Y(v)+4}" text-anchor="end" fill="#8fa3b0" font-size="12">${v}</text>`);
+[3,4,5,6,7,8,9].forEach(v=>h+=`<text x="${X(v)}" y="292" text-anchor="middle" fill="#8fa3b0" font-size="12">${v}</text>`);
+h+=`<text x="340" y="313" text-anchor="middle" fill="#8fa3b0" font-size="13">Daily average wind speed</text>`;
+[[M,'#ffd200','MTN'],[A,'#ff5252','Airtel']].forEach(([d,c,n])=>{
+  h+=`<polyline fill="none" stroke="${c}" stroke-width="2.5" points="${W.map((w,i)=>X(w)+','+Y(d[i])).join(' ')}"/>`;
+  W.forEach((w,i)=>h+=`<circle cx="${X(w)}" cy="${Y(d[i])}" r="4.5" fill="${c}"/>`);
+  h+=`<text x="${X(W[5])+10}" y="${Y(d[5])+4}" fill="${c}" font-size="13" font-weight="600">${n}</text>`;
+});
+document.getElementById('c').innerHTML=h;
+</script>
 </body>
 </html>
